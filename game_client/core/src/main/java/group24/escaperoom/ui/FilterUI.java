@@ -18,18 +18,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Null;
 
-import group24.escaperoom.data.Types.Filter;
-import group24.escaperoom.data.Types.FilterConstType;
-import group24.escaperoom.data.Types.Filters;
-import group24.escaperoom.data.Types.IsField;
-import group24.escaperoom.data.Types.Filters.Combination;
-import group24.escaperoom.data.Types.Sort;
-import group24.escaperoom.data.Types.Sort.Direction;
 import group24.escaperoom.screens.AbstractScreen;
+import group24.escaperoom.services.Types.Filter;
+import group24.escaperoom.services.Types.FilterConstType;
+import group24.escaperoom.services.Types.Filters;
+import group24.escaperoom.services.Types.IsField;
+import group24.escaperoom.services.Types.Sort;
+import group24.escaperoom.services.Types.Filters.Combination;
+import group24.escaperoom.services.Types.Sort.Direction;
+import group24.escaperoom.ui.notifications.Notifier;
 import group24.escaperoom.ui.widgets.G24Dialog;
 import group24.escaperoom.ui.widgets.G24TextButton;
 import group24.escaperoom.ui.widgets.G24TextInput;
-import group24.escaperoom.utils.Notifier;
+import group24.escaperoom.ui.widgets.G24Label;
 
 public class FilterUI extends G24Dialog {
   DragAndDrop dragAndDrop = new DragAndDrop();
@@ -80,8 +81,8 @@ public class FilterUI extends G24Dialog {
     });
 
 
-    getContentTable().add(new SmallLabel("Fields", "title")).center();
-    getContentTable().add(new SmallLabel("Methods", "title")).center().row();
+    getContentTable().add(new G24Label("Fields", "title")).center();
+    getContentTable().add(new G24Label("Methods", "title")).center().row();
     getContentTable().add(fieldSources).top();
     getContentTable().add(methodSources).top();
     getContentTable().add(box).top().row();
@@ -140,7 +141,7 @@ public class FilterUI extends G24Dialog {
   private class FilterEntry extends HorizontalGroup {
     Optional<Filter.Method> method = Optional.empty();
     Optional<IsField> field = Optional.empty();
-    private SmallLabel fieldLabel, methodLabel;
+    private G24Label fieldLabel, methodLabel;
     private MethodTarget methodTarget;
     private FieldTarget fieldTarget;
     private MethodSource methodSource;
@@ -157,10 +158,10 @@ public class FilterUI extends G24Dialog {
 
       valueInput = new G24TextInput();
 
-      methodLabel = new SmallLabel("<empty>", "bubble");
+      methodLabel = new G24Label("<empty>", "bubble");
       methodTarget = new MethodTarget(methodLabel);
 
-      fieldLabel = new SmallLabel("<empty>", "bubble");
+      fieldLabel = new G24Label("<empty>", "bubble");
       fieldTarget = new FieldTarget(fieldLabel);
 
       dragAndDrop.addTarget(methodTarget);
@@ -362,7 +363,7 @@ public class FilterUI extends G24Dialog {
       filterComboBtnGroup.add(andCombo, orCombo);
       andCombo.setChecked(true);
 
-      filterComboBox.addActor(new SmallLabel("Filter Combination:", "title"));
+      filterComboBox.addActor(new G24Label("Filter Combination:", "title"));
       filterComboBox.addActor(andCombo);
       filterComboBox.addActor(orCombo);
 
@@ -384,7 +385,7 @@ public class FilterUI extends G24Dialog {
       });
 
       HorizontalGroup sortOnBox = new HorizontalGroup();
-      SmallLabel fieldLabel = new SmallLabel(defaultSortField.displayName(), "bubble");
+      G24Label fieldLabel = new G24Label(defaultSortField.displayName(), "bubble");
       ButtonGroup<CheckBox> sortDirGroup = new ButtonGroup<>();
 
       CheckBox ascCheck = new CheckBox("Ascending", AbstractScreen.skin);
@@ -426,7 +427,7 @@ public class FilterUI extends G24Dialog {
         }
       });
 
-      sortOnBox.addActor(new SmallLabel("Sort on:", "title"));
+      sortOnBox.addActor(new G24Label("Sort on:", "title"));
       sortOnBox.addActor(fieldLabel);
       sortOnBox.addActor(descCheck);
       sortOnBox.addActor(ascCheck);
@@ -495,14 +496,14 @@ public class FilterUI extends G24Dialog {
     }
   }
 
-  private class FieldSourceLabel extends SmallLabel {
+  private class FieldSourceLabel extends G24Label {
     FieldSourceLabel(IsField field) {
       super(field.displayName(), "bubble");
       dragAndDrop.addSource(new FieldBankSource(this, field));
     }
   }
 
-  private class MethodSourceLabel extends SmallLabel {
+  private class MethodSourceLabel extends G24Label {
     MethodSourceLabel(Filter.Method method) {
       super(filterDisplayString(method), "bubble");
       dragAndDrop.addSource(new MethodBankSource(this, method));
@@ -538,16 +539,16 @@ public class FilterUI extends G24Dialog {
 
   private static class FieldPayload extends DragAndDrop.Payload {
     public FieldPayload(IsField field) {
-      SmallLabel actor = new SmallLabel(field.displayName(), "bubble");
+      G24Label actor = new G24Label(field.displayName(), "bubble");
       actor.pack();
       setDragActor(actor);
 
-      SmallLabel invalid = new SmallLabel(field.displayName(), "bubble");
+      G24Label invalid = new G24Label(field.displayName(), "bubble");
       invalid.setColor(1, 0.8f, 0.8f, 0.8f);
       invalid.pack();
       setInvalidDragActor(invalid);
 
-      SmallLabel valid = new SmallLabel(field.displayName(), "bubble");
+      G24Label valid = new G24Label(field.displayName(), "bubble");
       valid.setColor(0.8f, 1, 0.8f, 0.8f);
       valid.pack();
       setValidDragActor(valid);
@@ -564,16 +565,16 @@ public class FilterUI extends G24Dialog {
     public MethodPayload(Filter.Method method) {
 
       String s = filterDisplayString(method);
-      SmallLabel actor = new SmallLabel(s, "bubble");
+      G24Label actor = new G24Label(s, "bubble");
       actor.pack();
       setDragActor(actor);
 
-      SmallLabel invalid = new SmallLabel(s, "bubble");
+      G24Label invalid = new G24Label(s, "bubble");
       invalid.setColor(1, 0.8f, 0.8f, 0.8f);
       invalid.pack();
       setInvalidDragActor(invalid);
 
-      SmallLabel valid = new SmallLabel(s, "bubble");
+      G24Label valid = new G24Label(s, "bubble");
       valid.setColor(0.8f, 1, 0.8f, 0.8f);
       valid.pack();
       setValidDragActor(valid);

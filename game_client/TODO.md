@@ -5,9 +5,6 @@
 - [ ] game settings ui formatting; include default zoom and use default items
 - [ ] multi interaction shouldn't open multiple windows
 
-
-
-
 ## hard things
 - [ ] auto focus certain inputs on dialog open
 
@@ -20,13 +17,8 @@
 ## bugs
 - [ ] leaderboard is wrong??
 - [ ] placing something in the world doesnt update inventory checks until you move
-- [ ] check file existence on copy + create
 - [ ] copying a map and going to editor for first time always fails to load textures
 - [ ] copying a map does not copy game settings; probably move from metadata to mapdata
 - [ ] switching tools doesnt always properly clear the previous tool (?)
-- [ ] copying doesn't load textures, or game settings
 - [ ] game settings dialog requires two escape presses
 
-
-## dialog closing
-- [ ] picking up an item should close the dialogue

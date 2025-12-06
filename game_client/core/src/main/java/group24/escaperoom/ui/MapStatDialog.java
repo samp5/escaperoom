@@ -18,12 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 
-import group24.escaperoom.AssetManager;
-import group24.escaperoom.data.MapManager;
-import group24.escaperoom.data.MapMetadata;
-import group24.escaperoom.data.MapMetadata.MapStats;
+import group24.escaperoom.engine.assets.AssetManager;
+import group24.escaperoom.engine.assets.maps.MapManager;
+import group24.escaperoom.engine.assets.maps.MapMetadata;
+import group24.escaperoom.engine.assets.maps.MapMetadata.MapStats;
 import group24.escaperoom.ui.widgets.G24Dialog;
 import group24.escaperoom.ui.widgets.G24TextButton;
+import group24.escaperoom.ui.widgets.G24Label;
 
 public class MapStatDialog extends G24Dialog {
   Container<Image> thumbnailContainer;
@@ -31,11 +32,11 @@ public class MapStatDialog extends G24Dialog {
 
   public static class StatRow extends HorizontalGroup {
     public StatRow(String label, String value) {
-      this(label, new SmallLabel(value, "default", 0.6f));
+      this(label, new G24Label(value, "default", 0.6f));
     }
 
     public StatRow(String label, Actor value) {
-      SmallLabel name = new SmallLabel(label + ":", "bubble", 0.6f);
+      G24Label name = new G24Label(label + ":", "bubble", 0.6f);
       space(10);
       addActor(name);
       addActor(value);
@@ -106,14 +107,14 @@ public class MapStatDialog extends G24Dialog {
     desc.space(10);
     desc.columnLeft();
 
-    SmallLabel titleLabel = new SmallLabel("Description", "title", 0.65f);
+    G24Label titleLabel = new G24Label("Description", "title", 0.65f);
     desc.addActor(titleLabel);
 
-    SmallLabel descLabel = new SmallLabel(stats.description, "default", 0.65f);
+    G24Label descLabel = new G24Label(stats.description, "default", 0.65f);
     descLabel.setWrap(true);
     descLabel.setAlignment(Align.left);
 
-    Container<SmallLabel> descWrap = new Container<>(descLabel);
+    Container<G24Label> descWrap = new Container<>(descLabel);
     descWrap.width(300);
     descWrap.left();
     desc.addActor(descWrap);
@@ -121,8 +122,8 @@ public class MapStatDialog extends G24Dialog {
     t.add(desc).left().top().padTop(20).padRight(10);
     t.row();
 
-    t.add(new SmallLabel("Map Statstics", "title")).center();
-    t.add(new SmallLabel("World Record", "title")).center();
+    t.add(new G24Label("Map Statstics", "title")).center();
+    t.add(new G24Label("World Record", "title")).center();
     t.row();
     t.add(statGroup).minWidth(200).top();
     t.add(wrGroup).minWidth(200).top();

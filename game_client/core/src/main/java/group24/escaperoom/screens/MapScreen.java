@@ -1,5 +1,15 @@
 package group24.escaperoom.screens;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.TreeSet;
+import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
+
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,33 +26,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.TreeSet;
-import java.util.UUID;
-import java.util.function.Predicate;
-import java.util.logging.Logger;
-
-import group24.escaperoom.AssetManager;
-import group24.escaperoom.data.Drawable;
-import group24.escaperoom.data.EditorEvent;
-import group24.escaperoom.data.EditorEventBus;
-import group24.escaperoom.data.GameContext;
-import group24.escaperoom.data.Grid;
-import group24.escaperoom.data.MapData;
-import group24.escaperoom.data.Grid.Tile;
-import group24.escaperoom.data.Types.IntVector2;
-import group24.escaperoom.data.MapMetadata;
-import group24.escaperoom.data.EditorEvent.EventType;
-import group24.escaperoom.entities.Item;
-import group24.escaperoom.entities.properties.ConditionallyActive;
-import group24.escaperoom.entities.properties.Connectable;
-import group24.escaperoom.entities.properties.PropertyType;
-import group24.escaperoom.screens.editor.CamMan;
-import group24.escaperoom.utils.Types.Size;
+import group24.escaperoom.editor.events.EditorEvent;
+import group24.escaperoom.editor.events.EditorEvent.EventType;
+import group24.escaperoom.editor.events.EditorEventBus;
+import group24.escaperoom.engine.assets.AssetManager;
+import group24.escaperoom.engine.assets.maps.MapData;
+import group24.escaperoom.engine.assets.maps.MapMetadata;
+import group24.escaperoom.engine.render.Drawable;
+import group24.escaperoom.engine.types.IntVector2;
+import group24.escaperoom.engine.types.Size;
+import group24.escaperoom.game.entities.Item;
+import group24.escaperoom.game.entities.properties.ConditionallyActive;
+import group24.escaperoom.game.entities.properties.PropertyType;
+import group24.escaperoom.game.entities.properties.base.Connectable;
+import group24.escaperoom.game.state.GameContext;
+import group24.escaperoom.game.world.Grid;
+import group24.escaperoom.game.world.Grid.Tile;
+import group24.escaperoom.screens.utils.CamMan;
 
 public abstract class MapScreen extends AbstractScreen {
   @SuppressWarnings("unused")
@@ -74,7 +74,7 @@ public abstract class MapScreen extends AbstractScreen {
       });
     }
 
-    if (!temporary && this instanceof LevelEditorScreen){
+    if (!temporary && this instanceof LevelEditor){
       EditorEventBus.post(new EditorEvent(EventType.ItemRemoved, item));
     }
 

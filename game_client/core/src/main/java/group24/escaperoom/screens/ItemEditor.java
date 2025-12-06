@@ -26,29 +26,30 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Null;
 
-import group24.escaperoom.AssetManager;
-import group24.escaperoom.ScreenManager;
-import group24.escaperoom.control.ControlsManager;
-import group24.escaperoom.control.ControlsManager.InputType;
-import group24.escaperoom.control.Input;
-import group24.escaperoom.data.ItemSaver;
-import group24.escaperoom.data.MapData;
-import group24.escaperoom.data.MapLoader;
-import group24.escaperoom.data.MapSaver;
-import group24.escaperoom.entities.Item;
-import group24.escaperoom.entities.objects.ObjectTypeData;
-import group24.escaperoom.entities.properties.ItemPropertyValue;
-import group24.escaperoom.entities.properties.PropertyType;
-import group24.escaperoom.screens.editor.CamMan;
-import group24.escaperoom.screens.editor.CamMan.Translation;
+import group24.escaperoom.editor.item.ui.ItemSideBar;
+import group24.escaperoom.editor.item.ui.PropertyBank;
+import group24.escaperoom.editor.item.ui.PropertyConfigurationMenu;
+import group24.escaperoom.editor.item.ui.PropertyWorkspace;
+import group24.escaperoom.editor.ui.Menu;
+import group24.escaperoom.engine.BackManager;
+import group24.escaperoom.engine.assets.AssetManager;
+import group24.escaperoom.engine.assets.items.ItemSaver;
+import group24.escaperoom.engine.assets.items.ItemTypeData;
+import group24.escaperoom.engine.assets.maps.MapData;
+import group24.escaperoom.engine.assets.maps.MapLoader;
+import group24.escaperoom.engine.assets.maps.MapSaver;
+import group24.escaperoom.engine.control.ControlsManager;
+import group24.escaperoom.engine.control.ControlsManager.InputType;
+import group24.escaperoom.engine.control.input.Input;
+import group24.escaperoom.engine.types.Size;
+import group24.escaperoom.game.entities.Item;
+import group24.escaperoom.game.entities.properties.PropertyType;
+import group24.escaperoom.game.entities.properties.values.ItemPropertyValue;
+import group24.escaperoom.screens.utils.CamMan;
+import group24.escaperoom.screens.utils.CamMan.Translation;
+import group24.escaperoom.screens.utils.ScreenManager;
 import group24.escaperoom.ui.ConfirmDialog;
-import group24.escaperoom.ui.editor.ItemSideBar;
-import group24.escaperoom.ui.editor.Menu;
-import group24.escaperoom.ui.editor.PropertyBank;
-import group24.escaperoom.ui.editor.PropertyConfigurationMenu;
-import group24.escaperoom.ui.editor.PropertyWorkspace;
-import group24.escaperoom.utils.Notifier;
-import group24.escaperoom.utils.Types.Size;
+import group24.escaperoom.ui.notifications.Notifier;
 
 public class ItemEditor extends AbstractScreen {
   private Image room;
@@ -276,7 +277,7 @@ public class ItemEditor extends AbstractScreen {
    * Initialze a blank item for editing
    */
   private void initEmptyItem(){
-    ObjectTypeData blank = new ObjectTypeData("Blank", "None", new Size(1, 1), "placeholder", 0, new HashMap<>());
+    ItemTypeData blank = new ItemTypeData("Blank", "None", new Size(1, 1), "placeholder", 0, new HashMap<>());
     newItem = new Item(blank);
   }
 
@@ -373,7 +374,7 @@ public class ItemEditor extends AbstractScreen {
 
     // Reload the map and show the editor
     MapLoader.tryLoadMap(mapData.getMetadata()).ifPresent((md) -> {
-      ScreenManager.instance().showScreen(new LevelEditorScreen(md));
+      ScreenManager.instance().showScreen(new LevelEditor(md));
     });
   }
 
@@ -411,7 +412,7 @@ public class ItemEditor extends AbstractScreen {
 
   /**
    * Ensures that the propertyParameters field 
-   * of this item's {@link ObjectTypeData} is filled
+   * of this item's {@link ItemTypeData} is filled
    */
   public void fillPropertyParams(){
     HashMap<PropertyType, JsonValue> propertyParams = new HashMap<>();

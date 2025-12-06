@@ -3,7 +3,7 @@ package group24.escaperoom.ui.widgets;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import group24.escaperoom.utils.Notifier;
+import group24.escaperoom.ui.notifications.Notifier;
 
 public class G24NumberInput extends G24TextInput {
   public G24NumberInput() {

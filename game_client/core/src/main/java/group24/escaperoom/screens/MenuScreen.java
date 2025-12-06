@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 
-import group24.escaperoom.AssetManager;
-import group24.escaperoom.ui.SmallLabel;
+import group24.escaperoom.engine.assets.AssetManager;
+import group24.escaperoom.ui.widgets.G24Label;
 
 public abstract class MenuScreen extends AbstractScreen {
   Texture background;
@@ -46,7 +46,7 @@ public abstract class MenuScreen extends AbstractScreen {
    * {@code onComplete} on its result on the render thread
    */
   public <T> void waitFor(CompletableFuture<T> future, Function<T, Void> onComplete, String loadMessage) {
-    SmallLabel l = new SmallLabel(loadMessage, "bubble");
+    G24Label l = new G24Label(loadMessage, "bubble");
     l.setPosition(getUIStage().getWidth() / 2, getUIStage().getHeight() / 2, Align.center);
     l.pack();
     addUI(l);

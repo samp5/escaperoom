@@ -11,18 +11,21 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 
-import group24.escaperoom.AssetManager;
-import group24.escaperoom.entities.Item;
-import group24.escaperoom.entities.player.Player;
+import group24.escaperoom.engine.assets.AssetManager;
+import group24.escaperoom.game.entities.Item;
+import group24.escaperoom.game.entities.player.Player;
+import group24.escaperoom.game.ui.ActionDialog;
+import group24.escaperoom.ui.widgets.G24Label;
 
 public class ItemSlot extends Container<group24.escaperoom.ui.ItemSlot.ItemSlotInner> {
-  protected ItemSlotInner inner;
+  public ItemSlotInner inner;
 
   public static class ItemSlotInner extends Stack {
-    protected static class ItemSlotValues {
-      Item item;
-      Image itemPreview;
-      boolean selected = false;
+    public static class ItemSlotValues {
+      // TODO: fix this api post refac
+      public Item item;
+      public Image itemPreview;
+      public boolean selected = false;
 
       ItemSlotValues(Item item) {
         this.item = item;
@@ -49,11 +52,11 @@ public class ItemSlot extends Container<group24.escaperoom.ui.ItemSlot.ItemSlotI
     protected void setItem(Item item){
       ItemSlotValues iv = new ItemSlotValues(item);
       this.add(iv.itemPreview);
-      new Tooltip.Builder(new SmallLabel(item.getItemName() + " ID " + item.getID(), "bubble_gray", 0.65f)).target(iv.itemPreview, Tooltip.stageHelper(this)).build();
+      new Tooltip.Builder(new G24Label(item.getItemName() + " ID " + item.getID(), "bubble_gray", 0.65f)).target(iv.itemPreview, Tooltip.stageHelper(this)).build();
       this.slotValues = Optional.of(iv);
     }
 
-    Optional<ItemSlotValues> slotValues = Optional.empty();
+    public Optional<ItemSlotValues> slotValues = Optional.empty();
 
     public ItemSlotInner(Optional<Item> item) {
 

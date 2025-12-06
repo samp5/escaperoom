@@ -9,11 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import group24.escaperoom.control.ControlsManager;
-import group24.escaperoom.control.Input;
-import group24.escaperoom.control.ControlsManager.InputGroupMap;
-import group24.escaperoom.control.Input.MappingDescription;
-import group24.escaperoom.control.MapGroup;
+import group24.escaperoom.engine.control.ControlsManager;
+import group24.escaperoom.engine.control.ControlsManager.InputGroupMap;
+import group24.escaperoom.engine.control.bindings.MapGroup;
+import group24.escaperoom.engine.control.input.Input;
+import group24.escaperoom.engine.control.input.Input.MappingDescription;
+import group24.escaperoom.ui.widgets.G24Label;
 
 public class KeyMapTable extends Container<ScrollPane> {
   Table inner = new Table();
@@ -25,14 +26,14 @@ public class KeyMapTable extends Container<ScrollPane> {
 
     for (MapGroup group : groups){
       if (group == MapGroup.DEBUG) continue;
-      inner.add(new SmallLabel(group.toString(), "title", 1f)).center().colspan(2).row();
+      inner.add(new G24Label(group.toString(), "title", 1f)).center().colspan(2).row();
       for (Input input : keymaps.get(group)){
         MappingDescription desc = input.description();
-        inner.add(new SmallLabel(desc.desc, "bubble"));
+        inner.add(new G24Label(desc.desc, "bubble"));
         HorizontalGroup hg = new HorizontalGroup();
         hg.space(5);
         Arrays.stream(desc.bindings).forEach((bind) -> {
-          hg.addActor(new SmallLabel(bind, "bubble_gray"));
+          hg.addActor(new G24Label(bind, "bubble_gray"));
         });
         inner.add(hg).row();
       }

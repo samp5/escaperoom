@@ -5,10 +5,9 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
 import group24.escaperoom.screens.AbstractScreen;
-import group24.escaperoom.ui.SmallLabel;
 
 public class G24Window extends Window  {
-  protected SmallLabel label;
+  protected G24Label label;
   public G24Window(String title){
     super(title, AbstractScreen.skin);
     
@@ -18,17 +17,17 @@ public class G24Window extends Window  {
   public G24Window(String title,  String style){
     super(title, AbstractScreen.skin, style);
   }
-  public static SmallLabel G24StyleWindow(Window window, String title){
+  public static G24Label G24StyleWindow(Window window, String title){
     return G24StyleWindow(window, title, "default");
   }
 
-  public static SmallLabel G24StyleWindow(Window window, String title, String style){
+  public static G24Label G24StyleWindow(Window window, String title, String style){
     window.setStyle(AbstractScreen.skin.get(style, WindowStyle.class));
     window.getTitleTable().clearChildren();
     window.getTitleTable().defaults().pad(10);
-    SmallLabel label = null;
+    G24Label label = null;
     if (!title.isEmpty()){
-      label = new SmallLabel(title, "bubble");
+      label = new G24Label(title, "bubble");
     }
     window.getTitleTable().add(label).align(Align.center).padBottom(15);
     window.padTop(40);

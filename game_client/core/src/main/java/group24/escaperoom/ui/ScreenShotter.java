@@ -7,7 +7,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 
-import group24.escaperoom.data.MapMetadata;
+import group24.escaperoom.engine.assets.maps.MapMetadata;
 
 public class ScreenShotter {
   public static void takeScreenShot(MapMetadata metadata) {

@@ -12,24 +12,25 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
-import group24.escaperoom.control.ControlsManager.InputType;
-import group24.escaperoom.data.Types.IntVector2;
-import group24.escaperoom.control.ControlsManager;
-import group24.escaperoom.control.Input;
-import group24.escaperoom.control.InputOverride;
-import group24.escaperoom.entities.Item;
+import group24.escaperoom.editor.ui.GridView;
+import group24.escaperoom.editor.ui.ItemDecoration;
+import group24.escaperoom.editor.ui.ConfigurationMenu.HandlesMenuClose;
+import group24.escaperoom.engine.control.ControlsManager;
+import group24.escaperoom.engine.control.ControlsManager.InputType;
+import group24.escaperoom.engine.control.input.Input;
+import group24.escaperoom.engine.control.input.InputOverride;
+import group24.escaperoom.engine.types.IntVector2;
+import group24.escaperoom.game.entities.Item;
 import group24.escaperoom.screens.AbstractScreen;
-import group24.escaperoom.screens.LevelEditorScreen;
-import group24.escaperoom.screens.editor.GridView;
-import group24.escaperoom.screens.editor.ItemDecoration;
-import group24.escaperoom.ui.editor.ConfigurationMenu.HandlesMenuClose;
+import group24.escaperoom.screens.LevelEditor;
+import group24.escaperoom.ui.widgets.G24Label;
 
 public class ItemSelectUI extends Table implements HandlesMenuClose {
   private Function<Item, Void> onSelect = (i) -> null;
   private Function<Item, Void> onDeselect = (i) -> null;
   private Array<SelectedItem> selected = new Array<>();
   private Array<Item> canidateItems = new Array<>();
-  private LevelEditorScreen editor = null;
+  private LevelEditor editor = null;
   private boolean allowMultiple;
   private SelectInputOverride selectInputOverride = new SelectInputOverride();
   private HashMap<Integer, SelectableItemSlot> itemSlotMap = new HashMap<>();
@@ -207,11 +208,11 @@ public class ItemSelectUI extends Table implements HandlesMenuClose {
     // Field initialziation
     this.canidateItems = potentialItems;
     this.selected = mutSelections;
-    this.editor = (LevelEditorScreen)screen;
+    this.editor = (LevelEditor)screen;
     this.allowMultiple = allowMultiple;
 
     if (canidateItems.isEmpty()){
-      add(new SmallLabel(emptyMessage));
+      add(new G24Label(emptyMessage));
       return;
     }
 
@@ -271,7 +272,7 @@ public class ItemSelectUI extends Table implements HandlesMenuClose {
    *
    * @param emptyMessage the message to be displayed to the user should there be no potential items
    */
-  public ItemSelectUI(Array<Item> potentialItems, SelectedItem selection, String emptyMessage, LevelEditorScreen editor) {
+  public ItemSelectUI(Array<Item> potentialItems, SelectedItem selection, String emptyMessage, LevelEditor editor) {
     this(potentialItems, emptyMessage, Array.with(selection), false, editor);
   }
 

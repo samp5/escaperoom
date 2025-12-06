@@ -1,7 +1,6 @@
 package group24.escaperoom.screens;
 
 import java.io.File;
-import java.util.Optional;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -14,30 +13,31 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 
-import group24.escaperoom.data.MapMetadata;
-import group24.escaperoom.data.MapSaver;
-import group24.escaperoom.data.MapUploader;
-import group24.escaperoom.data.NotificationBus;
-import group24.escaperoom.data.MapUploader.UploadOutput;
-import group24.escaperoom.data.User;
-import group24.escaperoom.data.Grid;
-import group24.escaperoom.data.MapDownloader;
-import group24.escaperoom.data.MapDownloader.DownloadOutput;
-import group24.escaperoom.data.MapMetadata.MapLocation;
-import group24.escaperoom.data.MapMetadata.MapStats;
-import group24.escaperoom.ui.SmallLabel;
-import group24.escaperoom.ui.widgets.G24Dialog;
-import group24.escaperoom.ui.widgets.G24TextButton;
-import group24.escaperoom.ui.MapStatDialog;
-import group24.escaperoom.AssetManager;
-import group24.escaperoom.ScreenManager;
-import group24.escaperoom.data.MapLoader;
-import group24.escaperoom.data.MapManager;
-import group24.escaperoom.utils.Notifier;
+import group24.escaperoom.engine.BackManager;
+import group24.escaperoom.engine.assets.AssetManager;
+import group24.escaperoom.engine.assets.maps.MapLoader;
+import group24.escaperoom.engine.assets.maps.MapManager;
+import group24.escaperoom.engine.assets.maps.MapMetadata;
+import group24.escaperoom.engine.assets.maps.MapMetadata.MapLocation;
+import group24.escaperoom.engine.assets.maps.MapMetadata.MapStats;
+import group24.escaperoom.engine.assets.maps.MapSaver;
+import group24.escaperoom.engine.types.Size;
+import group24.escaperoom.game.world.Grid;
+import group24.escaperoom.screens.utils.ScreenManager;
+import group24.escaperoom.services.MapDownloader;
+import group24.escaperoom.services.MapDownloader.DownloadOutput;
+import group24.escaperoom.services.MapUploader;
+import group24.escaperoom.services.MapUploader.UploadOutput;
+import group24.escaperoom.services.User;
 import group24.escaperoom.ui.ConfirmDialog;
-import group24.escaperoom.ui.widgets.G24TextInput;
+import group24.escaperoom.ui.MapStatDialog;
+import group24.escaperoom.ui.notifications.NotificationBus;
+import group24.escaperoom.ui.notifications.Notifier;
+import group24.escaperoom.ui.widgets.G24Dialog;
+import group24.escaperoom.ui.widgets.G24Label;
 import group24.escaperoom.ui.widgets.G24NumberInput.IntInput;
-import group24.escaperoom.utils.Types.Size;
+import group24.escaperoom.ui.widgets.G24TextButton;
+import group24.escaperoom.ui.widgets.G24TextInput;
 
 public class MapSelectScreen extends MenuScreen {
 
@@ -56,7 +56,7 @@ public class MapSelectScreen extends MenuScreen {
   protected VerticalGroup entriesUI = new VerticalGroup();
   private AbstractScreen returnTo;
 
-  public static class StatLabel extends SmallLabel {
+  public static class StatLabel extends G24Label {
     public StatLabel(String label, String value) {
       super(label + ": " + value, "bubble_gray", 0.6f);
     }
@@ -83,7 +83,7 @@ public class MapSelectScreen extends MenuScreen {
       this.data = metadata;
       innerTable.setFillParent(true);
       innerTable.defaults().pad(10).center();
-      innerTable.add(new SmallLabel(metadata.name, "bubble"));
+      innerTable.add(new G24Label(metadata.name, "bubble"));
 
       if (settings.play) {
         innerTable.add(new PlayButton());
@@ -130,7 +130,7 @@ public class MapSelectScreen extends MenuScreen {
           public void changed(ChangeEvent event, Actor actor) {
             if (PlayButton.this.isChecked()) {
               MapLoader.tryLoadMap(data, settings.creation).ifPresent((g) -> {
-                ScreenManager.instance().showScreen(new SinglePlayerGameScreen(g, false));
+                ScreenManager.instance().showScreen(new SinglePlayerGame(g, false));
               });
             }
           }
@@ -152,7 +152,7 @@ public class MapSelectScreen extends MenuScreen {
               G24TextInput nameInput = new G24TextInput();
 
               new ConfirmDialog.Builder("Copy Map")
-                .withContent(new SmallLabel("Copy Name:", "underline"), false)
+                .withContent(new G24Label("Copy Name:", "underline"), false)
                 .withContent(nameInput, false)
                 .confirmText("Copy")
                 .onConfirm(() -> {
@@ -196,13 +196,13 @@ public class MapSelectScreen extends MenuScreen {
             if (DeleteButton.this.isChecked()) {
               G24Dialog dialog = new G24Dialog("Are you sure?");
               dialog.getContentTable().defaults().padLeft(10).padRight(10);
-              dialog.getContentTable().add(new SmallLabel(
+              dialog.getContentTable().add(new G24Label(
                   "Are you sure you want to delete " + MapEntry.this.data.name + "?"));
               dialog.getContentTable().row();
               dialog.getContentTable().add(
-                  new SmallLabel("This will delete any custom object data or textures in this directory", "underline"));
+                  new G24Label("This will delete any custom object data or textures in this directory", "underline"));
               dialog.getContentTable().row();
-              dialog.getContentTable().add(new SmallLabel("This cannot be undone", "underline"));
+              dialog.getContentTable().add(new G24Label("This cannot be undone", "underline"));
               G24TextButton confirmButton = new G24TextButton("Delete");
               dialog.getButtonTable().add(confirmButton);
 
@@ -323,7 +323,7 @@ public class MapSelectScreen extends MenuScreen {
           public void changed(ChangeEvent event, Actor actor) {
             if (EditButton.this.isChecked()) {
               MapLoader.tryLoadMap(data, settings.creation).ifPresent((g) -> {
-                ScreenManager.instance().showScreen(new LevelEditorScreen(g));
+                ScreenManager.instance().showScreen(new LevelEditor(g));
               });
             }
           }
@@ -341,7 +341,7 @@ public class MapSelectScreen extends MenuScreen {
           public void changed(ChangeEvent event, Actor actor) {
             if (VerifyButton.this.isChecked()) {
               MapLoader.tryLoadMap(data, settings.creation).ifPresent((g) -> {
-                ScreenManager.instance().showScreen(new SinglePlayerGameScreen(g, true));
+                ScreenManager.instance().showScreen(new SinglePlayerGame(g, true));
               });
             }
           }
@@ -355,7 +355,7 @@ public class MapSelectScreen extends MenuScreen {
     @Override
     public void changed(ChangeEvent event, Actor actor) {
       if (returnTo == null) {
-        ScreenManager.instance().showScreen(new MainMenuScreen());
+        ScreenManager.instance().showScreen(new MainMenu());
       } else {
         NotificationBus.get().removeListener(returnTo.getNotificationOverlay());
         ScreenManager.instance().showScreen(returnTo);
@@ -378,7 +378,7 @@ public class MapSelectScreen extends MenuScreen {
     rootTable.defaults().pad(10);
 
     Image title = null;
-    if (this instanceof MarketplaceScreen){
+    if (this instanceof Marketplace){
       title = new Image(AssetManager.instance().loadTextureBlocking("textures/marketplace.png"));
     } else {
       title = new Image(AssetManager.instance().loadTextureBlocking("textures/map_select.png"));
@@ -414,7 +414,7 @@ public class MapSelectScreen extends MenuScreen {
       if (User.isLoggedIn()) {
         ScreenManager.instance().showScreen(new OnlineMainMenu());
       } else {
-        ScreenManager.instance().showScreen(new MainMenuScreen());
+        ScreenManager.instance().showScreen(new MainMenu());
       }
     });
   }
@@ -502,7 +502,7 @@ public class MapSelectScreen extends MenuScreen {
 
   private class CreateNewMapButton extends G24TextButton {
     private ConfirmDialog getConfirmDialog(){
-      SmallLabel nameLabel = new SmallLabel("Map Name", "underline");
+      G24Label nameLabel = new G24Label("Map Name", "underline");
       G24TextInput mapNameInput = new G24TextInput();
       mapNameInput.setFilter(
           (c) -> Character.isAlphabetic(c) ||
@@ -553,9 +553,9 @@ public class MapSelectScreen extends MenuScreen {
 
       d.getContentTable().add(nameLabel).colspan(2).row();
       d.getContentTable().add(mapNameInput).colspan(2).row();
-      d.getContentTable().add(new SmallLabel("Map Height","underline"));
+      d.getContentTable().add(new G24Label("Map Height","underline"));
       d.getContentTable().add(heightInput).row();
-      d.getContentTable().add(new SmallLabel("Map Width", "underline"));
+      d.getContentTable().add(new G24Label("Map Width", "underline"));
       d.getContentTable().add(widthInput).row();
       return d;
     }

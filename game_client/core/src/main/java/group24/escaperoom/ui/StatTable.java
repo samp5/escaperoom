@@ -2,7 +2,7 @@ package group24.escaperoom.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import group24.escaperoom.data.GameStatistics;
+import group24.escaperoom.services.GameStatistics;
 import group24.escaperoom.ui.widgets.G24Label;
 
 public class StatTable extends Table {

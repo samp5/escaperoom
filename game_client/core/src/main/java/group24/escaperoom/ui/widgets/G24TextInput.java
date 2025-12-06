@@ -8,10 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 
-import group24.escaperoom.control.ControlsManager;
+import group24.escaperoom.engine.BackManager;
+import group24.escaperoom.engine.control.ControlsManager;
 import group24.escaperoom.screens.AbstractScreen;
-import group24.escaperoom.screens.BackManager;
-import group24.escaperoom.utils.Notifier;
+import group24.escaperoom.ui.notifications.Notifier;
 
 public class G24TextInput extends TextArea {
 

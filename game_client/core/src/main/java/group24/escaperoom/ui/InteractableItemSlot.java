@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import group24.escaperoom.entities.Item;
-import group24.escaperoom.entities.player.Player;
+import group24.escaperoom.game.entities.Item;
+import group24.escaperoom.game.entities.player.Player;
 
 import com.badlogic.gdx.utils.Null;
 

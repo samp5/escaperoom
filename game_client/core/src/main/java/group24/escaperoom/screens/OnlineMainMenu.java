@@ -3,16 +3,15 @@ package group24.escaperoom.screens;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Scaling;
 
-import group24.escaperoom.AssetManager;
-import group24.escaperoom.ScreenManager;
-import group24.escaperoom.data.MapLoader;
-import group24.escaperoom.data.User;
+import group24.escaperoom.engine.assets.AssetManager;
+import group24.escaperoom.engine.assets.maps.MapLoader;
 import group24.escaperoom.ui.widgets.G24TextButton;
 import group24.escaperoom.screens.MapSelectScreen.MapSelectScreenBuilder;
+import group24.escaperoom.screens.utils.ScreenManager;
+import group24.escaperoom.services.User;
 
 public class OnlineMainMenu extends MenuScreen {
   G24TextButton myMapsButton = new G24TextButton("My Maps");
@@ -36,7 +35,7 @@ public class OnlineMainMenu extends MenuScreen {
     @Override
     public void changed(ChangeEvent event, Actor actor) {
       User.logOut();
-      ScreenManager.instance().showScreen(new MainMenuScreen());
+      ScreenManager.instance().showScreen(new MainMenu());
     }
   };
 
@@ -44,7 +43,7 @@ public class OnlineMainMenu extends MenuScreen {
   private ChangeListener onMarketplace = new ChangeListener() {
     @Override
     public void changed(ChangeEvent event, Actor actor) {
-      ScreenManager.instance().showScreen(new MarketplaceScreen());
+      ScreenManager.instance().showScreen(new Marketplace());
     }
   };
 
@@ -52,7 +51,7 @@ public class OnlineMainMenu extends MenuScreen {
   private ChangeListener onLeaderboard = new ChangeListener() {
     @Override
     public void changed(ChangeEvent event, Actor actor) {
-      ScreenManager.instance().showScreen(new LeaderboardScreen());
+      ScreenManager.instance().showScreen(new Leaderboard());
     }
   };
 

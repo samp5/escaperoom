@@ -19,11 +19,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import group24.escaperoom.AssetManager;
-import group24.escaperoom.control.ControlsManager;
-import group24.escaperoom.data.NotificationBus;
-import group24.escaperoom.entities.Poll;
-import group24.escaperoom.ui.NotificationOverlay;
+import group24.escaperoom.engine.BackManager;
+import group24.escaperoom.engine.assets.AssetManager;
+import group24.escaperoom.engine.control.ControlsManager;
+import group24.escaperoom.game.state.Pollable;
+import group24.escaperoom.ui.notifications.NotificationBus;
+import group24.escaperoom.ui.notifications.NotificationOverlay;
 
 /**
  * Abstract class from which all screens extend
@@ -76,7 +77,7 @@ public abstract class AbstractScreen extends Stage implements Screen {
    */
   protected Optional<Actor> followActor;
 
-  private final HashSet<Poll> pollables = new HashSet<>();
+  private final HashSet<Pollable> pollables = new HashSet<>();
 
   /**
    * The batch used for drawing sprites
@@ -150,7 +151,7 @@ public abstract class AbstractScreen extends Stage implements Screen {
 
     ControlsManager.processInputs();
 
-    HashSet<Poll> toRemove = new HashSet<>();
+    HashSet<Pollable> toRemove = new HashSet<>();
     pollables.forEach((p) -> {
       if (!p.poll(delta)){
         toRemove.add(p);
@@ -159,11 +160,11 @@ public abstract class AbstractScreen extends Stage implements Screen {
     pollables.removeAll(toRemove);
   }
 
-  public void addPollable(Poll pollable){
+  public void addPollable(Pollable pollable){
     pollables.add(pollable);
   }
 
-  public void removePollable(Poll pollable){
+  public void removePollable(Pollable pollable){
     pollables.remove(pollable);
   }
 

@@ -7,10 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Null;
+
+import group24.escaperoom.game.entities.Item;
+
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
-import group24.escaperoom.entities.Item;
 
 public class SelectableItemSlot extends ItemSlot {
 

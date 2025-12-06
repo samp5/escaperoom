@@ -1,6 +1,5 @@
 package group24.escaperoom.ui.widgets;
 
-import group24.escaperoom.screens.BackManager;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -8,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
+import group24.escaperoom.engine.BackManager;
 import group24.escaperoom.screens.AbstractScreen;
 
 public class G24Dialog extends Dialog {

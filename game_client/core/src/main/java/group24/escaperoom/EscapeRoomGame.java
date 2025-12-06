@@ -7,21 +7,23 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import com.badlogic.gdx.Game;
 
-import group24.escaperoom.entities.objects.ObjectLoader;
-import group24.escaperoom.screens.CursorManager;
-import group24.escaperoom.screens.MainMenuScreen;
-import group24.escaperoom.screens.CursorManager.CursorType;
+import group24.escaperoom.engine.assets.AssetManager;
+import group24.escaperoom.engine.assets.items.ItemLoader;
+import group24.escaperoom.engine.control.CursorManager;
+import group24.escaperoom.engine.control.CursorManager.CursorType;
+import group24.escaperoom.screens.MainMenu;
+import group24.escaperoom.screens.utils.ScreenManager;
 
 
 public class EscapeRoomGame extends Game {
 
   public void create() {
     configLogger();
-    ObjectLoader.LoadAllObjects();
+    ItemLoader.LoadAllObjects();
     AssetManager.instance().finishLoading();
     ScreenManager.instance().initialize(this);
     CursorManager.setCursor(CursorType.Pointer);
-    ScreenManager.instance().showScreen(new MainMenuScreen());
+    ScreenManager.instance().showScreen(new MainMenu());
   }
 
   public void configLogger() {

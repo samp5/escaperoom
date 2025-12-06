@@ -1,0 +1,28 @@
+{
+  "name": "Door",
+  "size": {
+    "width": 1,
+    "height": 2,
+  },
+  "properties": [
+    "interactable",
+    "barrier",
+    "locked",
+    "conditionally_active"
+  ],
+  "property_values": {
+    "locked": {
+        "default": {
+          "type": "trivial"
+        },
+        "available": [
+          { "type": "combo_lock" },
+          { "type": "key_lock" },
+          { "type": "pass_phrase" },
+          { "type": "trivial" },
+        ]
+    }
+  },
+  "texture": "door.png",
+  "render_priority": 5,
+}

@@ -1,0 +1,422 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	pixel: {
+		file: pixel.fnt
+		scaledSize: 16
+		markupEnabled: true
+		flip: false
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	bkg: {
+		r: 0.7019608
+		g: 0.7254902
+		b: 0.81960785
+		a: 1
+	}
+	BLACK: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	gray: {
+		r: 0.39607844
+		g: 0.39607844
+		b: 0.39607844
+		a: 1
+	}
+	light_black: {
+		r: 0.13333334
+		g: 0.13333334
+		b: 0.13333334
+		a: 1
+	}
+	RGBA_245_245_245_255: {
+		r: 0.8627451
+		g: 0.8509804
+		b: 0.8509804
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	bkg: {
+		name: white-pixel
+		color: bkg
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: button_up
+		down: button_down
+		over: button_hover
+		disabled: button_disable
+		checked: button_down
+		checkedOver: button_down_hover
+		checkedDown: button_down
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: checkbox3
+		checkboxOff: checkbox1
+		checkboxOnOver: checkbox4
+		checkboxOver: checkbox2
+		font: pixel
+		fontColor: BLACK
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	default: {
+		imageUp: button_up
+		imageDown: button_down
+		imageOver: button_hover
+		imageDisabled: button_down
+		imageChecked: button_down
+		imageCheckedDown: button_down
+		imageCheckedOver: button_down_hover
+	}
+	selectButton: {
+		imageUp: select_tool1
+		imageDown: select_tool3
+		imageOver: select_tool2
+		imageDisabled: select_tool4
+		imageChecked: select_tool3
+		imageCheckedDown: select_tool3
+		imageCheckedOver: select_tool5
+	}
+	moveButton: {
+		imageUp: move_tool1
+		imageDown: move_tool3
+		imageOver: move_tool2
+		imageDisabled: move_tool4
+		imageChecked: move_tool3
+		imageCheckedDown: move_tool3
+		imageCheckedOver: move_tool5
+	}
+	deleteButton: {
+		imageUp: delete_tool1
+		imageDown: delete_tool3
+		imageOver: delete_tool2
+		imageDisabled: delete_tool4
+		imageChecked: delete_tool3
+		imageCheckedDown: delete_tool4
+		imageCheckedOver: delete_tool5
+	}
+	rotateButton: {
+		imageUp: rotate_tool1
+		imageDown: rotate_tool3
+		imageOver: rotate_tool2
+		imageDisabled: rotate_tool4
+		imageChecked: rotate_tool3
+		imageCheckedDown: rotate_tool3
+		imageCheckedOver: rotate_tool5
+	}
+	toggleForbidden: {
+		imageUp: toggle_forbidden1
+		imageDown: toggle_forbidden3
+		imageOver: toggle_forbidden2
+		imageDisabled: toggle_forbidden4
+		imageChecked: toggle_forbidden3
+		imageCheckedDown: toggle_forbidden3
+		imageCheckedOver: toggle_forbidden5
+	}
+	toggleRequired: {
+		imageUp: toggle_required1
+		imageDown: toggle_required3
+		imageOver: toggle_required2
+		imageDisabled: toggle_required4
+		imageChecked: toggle_required3
+		imageCheckedDown: toggle_required3
+		imageCheckedOver: toggle_required5
+	}
+	redo: {
+		imageUp: redo_button1
+		imageDown: redo_button3
+		imageOver: redo_button2
+		imageDisabled: redo_button4
+		imageChecked: redo_button3
+		imageCheckedOver: redo_button5
+	}
+	undo: {
+		imageUp: undo_button1
+		imageDown: undo_button3
+		imageOver: undo_button2
+		imageDisabled: undo_button4
+		imageChecked: undo_button3
+		imageCheckedDown: undo_button3
+		imageCheckedOver: undo_button5
+	}
+	upload: {
+		imageUp: upload_btn1
+		imageDown: upload_btn3
+		imageOver: upload_btn2
+		imageDisabled: upload_btn4
+		imageChecked: upload_btn3
+		imageCheckedDown: upload_btn3
+		imageCheckedOver: upload_btn5
+	}
+	download: {
+		imageUp: download_btn1
+		imageDown: download_btn3
+		imageOver: download_btn2
+		imageDisabled: download_btn4
+		imageChecked: download_btn3
+		imageCheckedDown: download_btn3
+		imageCheckedOver: download_btn5
+	}
+	info: {
+		imageUp: info_btn1
+		imageDown: info_btn3
+		imageOver: info_btn2
+		imageDisabled: info_btn4
+		imageChecked: info_btn3
+		imageCheckedDown: info_btn3
+		imageCheckedOver: info_btn5
+	}
+	copy: {
+		imageUp: copy_button1
+		imageDown: copy_button3
+		imageOver: copy_button2
+		imageDisabled: copy_button4
+		imageChecked: copy_button3
+		imageCheckedDown: copy_button3
+		imageCheckedOver: copy_button5
+	}
+	play: {
+		imageUp: play_button1
+		imageDown: play_button3
+		imageOver: play_button2
+		imageDisabled: play_button4
+		imageChecked: play_button3
+		imageCheckedDown: play_button3
+		imageCheckedOver: play_button5
+	}
+	edit: {
+		imageUp: edit_button1
+		imageDown: edit_button3
+		imageOver: edit_button2
+		imageDisabled: edit_button4
+		imageChecked: edit_button3
+		imageCheckedDown: edit_button3
+		imageCheckedOver: edit_button5
+	}
+	upvote: {
+		imageUp: upvote1
+		imageDown: upvote3
+		imageOver: upvote2
+		imageDisabled: upvote4
+		imageChecked: upvote3
+		imageCheckedDown: upvote3
+		imageCheckedOver: upvote5
+	}
+	downvote: {
+		imageUp: downvote1
+		imageDown: downvote3
+		imageOver: downvote2
+		imageDisabled: downvote4
+		imageChecked: downvote3
+		imageCheckedDown: downvote3
+		imageCheckedOver: downvote5
+	}
+	fill: {
+		imageUp: fill_tool1
+		imageDown: fill_tool3
+		imageOver: fill_tool2
+		imageDisabled: fill_tool4
+		imageChecked: fill_tool3
+		imageCheckedDown: fill_tool3
+		imageCheckedOver: fill_tool5
+	}
+	pan: {
+		imageUp: pan_tool1
+		imageDown: pan_tool3
+		imageOver: pan_tool2
+		imageDisabled: pan_tool4
+		imageChecked: pan_tool3
+		imageCheckedDown: pan_tool3
+		imageCheckedOver: pan_tool5
+	}
+	property_cv: {
+		imageUp: copy_button1
+		imageDown: copy_button3
+		imageOver: copy_button2
+		imageDisabled: copy_button4
+		imageChecked: copy_button3
+		imageCheckedDown: copy_button3
+		imageCheckedOver: copy_button5
+	}
+	eyedropper: {
+		imageUp: eyedrop_button1
+		imageDown: eyedrop_button3
+		imageOver: eyedrop_button2
+		imageDisabled: eyedrop_button4
+		imageChecked: eyedrop_button3
+		imageCheckedDown: eyedrop_button3
+		imageCheckedOver: eyedrop_button5
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: pixel
+		fontColor: BLACK
+	}
+	windowTitle: {
+		font: pixel
+		fontColor: BLACK
+		background: window2
+	}
+	bubble: {
+		font: pixel
+		fontColor: BLACK
+		background: bubble_label
+	}
+	white: {
+		font: pixel
+		fontColor: RGBA_245_245_245_255
+	}
+	title: {
+		font: pixel
+		fontColor: BLACK
+		background: title
+	}
+	bubble_select: {
+		font: pixel
+		fontColor: BLACK
+		background: bubble_label_select
+	}
+	underline: {
+		font: pixel
+		fontColor: BLACK
+		background: underline
+	}
+	bubble_gray: {
+		font: pixel
+		fontColor: bkg
+		background: gray_bubble
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: pixel
+		fontColorSelected: BLACK
+		fontColorUnselected: BLACK
+		selection: yellow_transparent_bkg
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: label_small
+		knob: scollknob
+	}
+	default-vertical: {
+		background: label_small
+		knob: scollknob
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		background: transparent_bkg
+		hScroll: label_small
+		hScrollKnob: scollknob
+		vScroll: label_small
+		vScrollKnob: scollknob
+	}
+	transparent: {
+		background: transparent_bkg
+	}
+	nobkg: {
+		hScroll: bkg
+		hScrollKnob: scollknob
+		vScroll: bkg
+		vScrollKnob: scollknob
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+	default: {
+		font: pixel
+		fontColor: BLACK
+		scrollStyle: default
+		listStyle: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
+	default-horizontal: {
+		handle: scollknob
+	}
+	default-vertical: {
+		handle: scollknob
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: pixel
+		fontColor: BLACK
+		downFontColor: BLACK
+		overFontColor: BLACK
+		focusedFontColor: BLACK
+		disabledFontColor: BLACK
+		checkedFontColor: BLACK
+		checkedDownFontColor: BLACK
+		checkedOverFontColor: BLACK
+		checkedFocusedFontColor: BLACK
+		up: button_up
+		down: button_down
+		over: button_hover
+		disabled: button_disable
+		checked: button_down
+		checkedOver: button_down_hover
+		checkedDown: button_down
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: pixel
+		fontColor: light_black
+		focusedFontColor: BLACK
+		background: label_small_unfocus
+		focusedBackground: label_small
+		cursor: text_cursor
+		selection: text_highlight
+		messageFont: pixel
+		messageFontColor: gray
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
+	default: {
+		plus: toggle1
+		minus: toggle3
+		plusOver: toggle2
+		minusOver: toggle4
+		selection: yellow_transparent_bkg
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: window2
+		titleFont: pixel
+		titleFontColor: BLACK
+	}
+	withBackground: {
+		background: window2
+		titleFont: pixel
+		titleFontColor: BLACK
+		stageBackground: bkg
+	}
+	transparent: {
+		background: tan_transparent
+		titleFont: pixel
+		titleFontColor: RGBA_245_245_245_255
+	}
+	menu: {
+		background: right_click_menu
+		titleFont: pixel
+		titleFontColor: BLACK
+	}
+}
+}

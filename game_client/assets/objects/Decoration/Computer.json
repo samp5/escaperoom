@@ -1,0 +1,23 @@
+{
+  "name": "Computer",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "containsitems",
+    "animated",
+    "interactable",
+    "conditionally_active",
+  ],
+  "property_values": {
+    "animated": {
+      "frame_count": 14,
+      "frame_length": 0.75,
+      "frame_width": 18,
+      "frame_height": 18,
+    },
+  },
+  "texture": "computer.png",
+  "render_priority": 5,
+}

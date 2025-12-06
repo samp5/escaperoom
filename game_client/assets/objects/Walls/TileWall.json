@@ -1,0 +1,37 @@
+{
+  "name": "Wall",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "stylable",
+    "tiled_brushable",
+    "barrier",
+    "collideable",
+  ],
+  "property_values": {
+    "stylable": {
+      "available": [
+        {
+          "name": "Stone"
+          "texture": "stone_wall.png"
+        },
+        {
+          "name": "Brick"
+          "texture": "brick_wall.png"
+        },
+        {
+          "name": "Sand"
+          "texture": "sandstone_wall.png"
+        },
+        {
+          "name": "Dark"
+          "texture": "dark_wall.png"
+        },
+      ],
+    }
+  },
+  "texture": "stone_wall.png",
+  "render_priority": 4,
+}

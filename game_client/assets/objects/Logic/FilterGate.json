@@ -1,0 +1,21 @@
+{
+  "name": "Filter Gate",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "connector_relay",
+    "obtainable",
+    "containable",
+    "interactable",
+  ],
+  "property_values": {
+    "connector_relay": {
+      "type": "Power",
+      "relay_type": "Filter",
+    }
+  },
+  "texture": "filter_gate.png",
+  "render_priority": 2,
+}

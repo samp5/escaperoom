@@ -1,0 +1,16 @@
+{
+  "name": "Map",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "viewable",
+    "interactable",
+    "containable",
+    "obtainable",
+    "conditionally_visible",
+  ],
+  "texture": "map.png",
+  "render_priority": 2,
+}

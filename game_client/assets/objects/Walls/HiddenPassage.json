@@ -1,0 +1,49 @@
+{
+  "name": "Hidden Passage",
+  "size": {
+    "width": 1,
+    "height": 2,
+  },
+  "properties": [
+    "interactable",
+    "barrier",
+    "stylable",
+    "locked",
+    "conditionally_active",
+  ],
+  "property_values": {
+    "stylable": {
+      "available": [
+        {
+          "name": "Stone"
+          "texture": "stone_hidden_door.png"
+        },
+        {
+          "name": "Brick"
+          "texture": "brick_hidden_door.png"
+        },
+        {
+          "name": "Sand"
+          "texture": "sandstone_hidden_door.png"
+        },
+        {
+          "name": "Dark"
+          "texture": "dark_hidden_door.png"
+        },
+      ],
+    }
+    "locked": {
+        "default": {
+          "type": "key_lock"
+        },
+        "available": [
+          { "type": "combo_lock" },
+          { "type": "key_lock" },
+          { "type": "trivial" },
+          { "type": "pass_phrase" },
+        ]
+    }
+  },
+  "texture": "stone_hidden_door.png",
+  "render_priority": 5,
+}

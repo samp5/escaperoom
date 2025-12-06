@@ -1,0 +1,16 @@
+{
+  "name": "Note",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "readable",
+    "interactable",
+    "containable",
+    "obtainable",
+    "conditionally_visible",
+  ],
+  "texture": "note.png",
+  "render_priority": 2,
+}

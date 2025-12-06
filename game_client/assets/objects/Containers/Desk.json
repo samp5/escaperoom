@@ -1,0 +1,33 @@
+{
+  "name": "Desk",
+  "size": {
+    "width": 3,
+    "height": 2,
+  },
+  "properties": [
+    "locked",
+    "interactable",
+    "containsitems",
+    "collideable",
+    "spinable",
+  ],
+  "property_values": {
+    "locked": {
+        "default": {
+          "type": "trivial"
+        },
+        "available": [
+          { "type": "combo_lock"},
+          { "type": "key_lock" },
+          { "type": "trivial" },
+          { "type": "pass_phrase" },
+        ]
+    },
+    "spinable": {
+      "pixel_width": 48,
+      "pixel_height": 32,
+    }
+  },
+  "texture": "desk.png",
+  "render_priority": 5,
+}

@@ -1,0 +1,361 @@
+package group24.escaperoom.screens;
+
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.TreeSet;
+import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
+
+import group24.escaperoom.AssetManager;
+import group24.escaperoom.data.Drawable;
+import group24.escaperoom.data.EditorEvent;
+import group24.escaperoom.data.EditorEventBus;
+import group24.escaperoom.data.GameContext;
+import group24.escaperoom.data.Grid;
+import group24.escaperoom.data.MapData;
+import group24.escaperoom.data.Grid.Tile;
+import group24.escaperoom.data.Types.IntVector2;
+import group24.escaperoom.data.MapMetadata;
+import group24.escaperoom.data.EditorEvent.EventType;
+import group24.escaperoom.entities.Item;
+import group24.escaperoom.entities.properties.ConditionallyActive;
+import group24.escaperoom.entities.properties.Connectable;
+import group24.escaperoom.entities.properties.PropertyType;
+import group24.escaperoom.screens.editor.CamMan;
+import group24.escaperoom.utils.Types.Size;
+
+public abstract class MapScreen extends AbstractScreen {
+  @SuppressWarnings("unused")
+  private Logger log = Logger.getLogger(MapScreen.class.getName());
+  protected Actor roomProxy;
+  protected Image room;
+  public Grid grid;
+  protected final Batch batch;
+  protected MapMetadata metadata;
+  protected Size gridSize;
+  protected Array<Item> pollItems = new Array<>();
+  protected CamMan cameraManager;
+
+  public MapMetadata getMetadata() {
+    return metadata;
+  }
+
+  /**
+   * Remove an item from the grid
+   *
+   * @param temporary whether or not this is likely a temporary removal
+   */
+  public void removeItemFromGrid(Item item, boolean temporary) {
+    if (this instanceof GameScreen) {
+      GameContext ctx = new GameContext((GameScreen) this);
+      // Set false on removal of a connectable, this may or may not propage the signal
+      Connectable.Utils.isConnectable(item).ifPresent((ci) -> {
+        ci.connectable.setActive(false, ctx);
+      });
+    }
+
+    if (!temporary && this instanceof LevelEditorScreen){
+      EditorEventBus.post(new EditorEvent(EventType.ItemRemoved, item));
+    }
+
+    // Remove from grid
+    grid.removeItem(item);
+
+    // Try and update textures
+    Connectable.Utils.maybeUpateSurroundingTileables(item, this);
+  }
+
+  /**
+   * Update the room proxy on the ui stage to align with
+   * the game stage room
+   */
+  protected void updateProxy() {
+    Vector2 proxyOrigin = gameCoordToUI(new Vector2(0, 0));
+    Vector2 proxyDiagonalPoint = gameCoordToUI(new Vector2(gridSize.width, gridSize.height));
+    roomProxy.setBounds(proxyOrigin.x, proxyOrigin.y, proxyDiagonalPoint.x - proxyOrigin.x,
+        proxyDiagonalPoint.y - proxyOrigin.y);
+  }
+
+  /**
+   * @return whether or not the an item fufilling {@code predicate} exists on the map
+   */
+  public boolean containsItemWhere(Predicate<Item> predicate) {
+    return grid.containsItemWhere(predicate);
+  }
+
+  /**
+   * @return an {@link Optional} containing the first item fulfilling the given {@code predicate}
+   */
+  public Optional<Item> findItemWhere(Predicate<Item> predicate) {
+    return grid.findItemWhere(predicate);
+  }
+
+  /**
+   * @return an {@link Optional} with all items in this square.
+   *
+   * - the inner array can be empty
+   * - {@link Optional} just protects out of bounds access
+   */
+  public Optional<Item[]> getItemsAt(IntVector2 pos) {
+    return grid.getAt(pos.x, pos.y).map(t -> t.getContainedItems());
+  }
+
+  /**
+   * @return an {@link Optional} with all items in this square.
+   *
+   * - the inner array can be empty
+   * - {@link Optional} just protects out of bounds access
+   */
+  public Optional<Item[]> getItemsAt(int x, int y) {
+    return grid.getAt(x, y).map(t -> t.getContainedItems());
+  }
+
+  /**
+   * @see MapScreen#getItemsAt(int, int)
+   */
+  public Optional<Item[]> getItemsAt(float x, float y) {
+    return this.getItemsAt((int) x, (int) y);
+  }
+
+  /**
+   * Get a list of all items present in a certain region
+   *
+   * - This returns items also partially contained in the region
+   */
+  public HashSet<Item> getItemsIn(Rectangle region) {
+    int minX = (int) region.getX();
+    int minY = (int) region.getY();
+    int maxX = (int) (region.getX() + region.getWidth());
+    int maxY = (int) (region.getY() + region.getHeight());
+
+    HashSet<Item> items = new HashSet<>();
+
+    for (int y = minY; y < maxY; y++) {
+      for (int x = minX; x < maxX; x++) {
+        grid.getAt(x, y)
+            .map((t) -> t.getContainedItems())
+            .ifPresent((is) -> {
+              for (Item i : is) {
+                items.add(i);
+              }
+            });
+      }
+    }
+
+    return items;
+
+  }
+
+  /**
+   * @return whether or not {@code item} can be placed at {@code newPos}
+   */
+  public static boolean canPlace(Item item, IntVector2 newPos, Grid grid) {
+    for (int dy = 0; dy < item.getHeight(); dy++) {
+      for (int dx = 0; dx < item.getWidth(); dx++) {
+        Optional<Tile> t = grid.getAt(newPos.x + dx, newPos.y + dy);
+        if (t.isEmpty()) {
+          return false;
+        }
+
+        Tile tile = t.get();
+        if (!tile.canAdd(item)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * @return whether or not {@code item} can be placed at {@code newPos}
+   */
+  public boolean canPlace(Item item, IntVector2 newPos) {
+    return canPlace(item, newPos, grid);
+  }
+
+  public MapScreen(MapData mapdata) {
+    super();
+
+    this.batch = new SpriteBatch();
+    this.metadata = mapdata.getMetadata();
+    this.gridSize = mapdata.getGrid().getSize();
+    this.cameraManager = new CamMan((OrthographicCamera) getCamera());
+    cameraManager.setZoom(metadata.gameSettings.defaultZoom);
+
+    // Add gridded room
+    AssetManager.instance().load("textures/tile.png", Texture.class);
+    AssetManager.instance().finishLoading();
+    Texture tile = AssetManager.instance().get("textures/tile.png", Texture.class);
+    tile.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
+
+    TextureRegion roomTexture = new TextureRegion(tile);
+    roomTexture.setRegion(0, 0, tile.getWidth() * gridSize.width, tile.getHeight() * gridSize.height);
+
+    room = new Image(roomTexture);
+    room.setPosition(0, 0);
+    room.setSize(gridSize.width, gridSize.height);
+    room.setName("room");
+
+    // So, create a proxy actor the same size as the room that we can then use to
+    // project onto the actual game stage
+    roomProxy = new Actor();
+    updateProxy();
+    addUI(roomProxy);
+    addActor(room);
+
+    addListener(new InputListener() {
+      @Override
+      public boolean keyTyped(InputEvent event, char character) {
+        // if (character == 'p') {
+        //   grid.printGrid();
+        //   return true;
+        // }
+        //
+        if (character == 'j') {
+          Json j = new Json();
+          String json = j.prettyPrint(MapScreen.this.grid);
+
+          if (json.length() > 10000){
+          File f = new File("/tmp/" + UUID.randomUUID().toString() + ".json");
+          try {
+            FileOutputStream fout = new FileOutputStream(f);
+            fout.write(json.getBytes());
+            fout.close();
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          System.out.println("file length over 10,000 -> wrote to: " + f.getAbsolutePath());
+          return true;
+          } else {
+            System.out.println(json);
+          }
+        }
+        return false;
+      }
+    });
+  }
+
+  public void loadGrid(Grid grid) {
+    if (grid == null) return;
+
+    this.grid = grid;
+    for (Item item : grid.items.values()) {
+      item.map = this;
+      maybeAddPolling(item);
+    }
+  }
+
+  /**
+   * Registers an Item for polling if it needs it.
+   *
+   * If called with an Item that doesn't need polling, this function does nothing.
+   */
+  public void maybeAddPolling(Item item) {
+    if (item.hasProperty(PropertyType.ConditionallyVisible)) {
+      pollItems.add(item);
+      return;
+    }
+
+    item.getProperty(PropertyType.ConditionallyActive, ConditionallyActive.class)
+      .ifPresent((ConditionallyActive ca) -> {
+        if (ca.requiresPoll()) pollItems.add(item);
+      }
+    );
+  }
+
+  /**
+   * @return all items associated with this map
+   *
+   * - not all these items are necessarily placed
+   */
+  public Collection<Item> getItems() {
+    return grid.items.values();
+  }
+
+  /**
+   * Place an item on the grid
+   *
+   */
+  public boolean placeItem(Item item) {
+    item.map = this;
+    return grid.placeItem(item);
+  }
+
+  public Grid getGrid() {
+    return grid;
+  }
+
+  public TreeSet<Drawable> getDrawables() {
+    return grid.getDrawables();
+  }
+
+  public void draw(boolean endBatch){
+    Camera camera = getViewport().getCamera();
+    camera.update();
+
+    batch.setProjectionMatrix(getCamera().combined);
+    batch.begin();
+    getRoot().draw(batch, 1); // clear the screen
+
+    TreeSet<Drawable> drawables = getDrawables();
+    for (Drawable i : drawables) {
+      i.draw(batch);
+    }
+
+    if (endBatch) batch.end();
+  }
+
+  @Override
+  public void draw() {
+    draw(true);
+  }
+
+  public boolean itemIsPlaced(Item i){
+    return grid.placedItems.containsKey(i.getID());
+  }
+
+  @Override
+  public void act(float delta) {
+    super.act(delta);
+    updateProxy();
+
+    for (Item i : grid.placedItems.values()){
+      i.update(delta);
+    }
+
+    room.setZIndex(0);
+    roomProxy.setZIndex(0);
+  }
+
+  @Override
+  public void resize(int w, int h) {
+    super.resize(w, h);
+    if (roomProxy != null) {
+      updateProxy();
+    }
+  }
+
+  public int getTileDepthOf(Item item) {
+    return grid.getTileDepthOf(item);
+  }
+}

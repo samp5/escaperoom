@@ -1,0 +1,28 @@
+{
+  "name": "Lever",
+  "size": {
+    "width": 1,
+    "height": 2,
+  },
+  "properties": [
+    "collideable",
+    "interactable",
+    "connector_source",
+    "toggleable",
+    "conditionally_active",
+    "fragile",
+  ],
+  "property_values": {
+    "connector_source": {
+      "type": "Power",
+    },
+    "collideable": {
+      "xoffset": 0,
+      "yoffset": 0,
+      "width": 1,
+      "height": 1,
+    },
+  },
+  "texture": "lever.png",
+  "render_priority": 5,
+}

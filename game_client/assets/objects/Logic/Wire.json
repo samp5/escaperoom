@@ -1,0 +1,21 @@
+{
+  "name": "Wire",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "tiled_brushable",
+    "connector",
+    "obtainable",
+    "containable",
+    "interactable",
+  ],
+  "property_values": {
+    "connector": {
+      "type": "Power",
+    }
+  },
+  "texture": "wire.png",
+  "render_priority": 2,
+}

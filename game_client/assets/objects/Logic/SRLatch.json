@@ -1,0 +1,22 @@
+{
+  "name": "SR Latch",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "connector_relay",
+    "obtainable",
+    "containable",
+    "interactable",
+  ],
+  "property_values": {
+    "connector_relay": {
+      "type": "Power",
+      "relay_type": "SRLatch",
+    }
+  },
+  "texture": "sr_latch.png",
+  "render_priority": 2,
+}
+

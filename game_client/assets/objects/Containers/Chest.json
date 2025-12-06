@@ -1,0 +1,34 @@
+{
+  "name": "Chest",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "locked",
+    "interactable",
+    "containsitems",
+    "collideable",
+    "spinable",
+    "readable",
+  ],
+  "property_values": {
+    "spinable": {
+      "pixel_width": 16,
+      "pixel_height": 16,
+    }
+    "locked": {
+        "default": {
+          "type": "trivial"
+        },
+        "available": [
+          { "type": "combo_lock"},
+          { "type": "key_lock" },
+          { "type": "trivial" },
+          { "type": "pass_phrase" },
+        ]
+    }
+  },
+  "texture": "chest.png",
+  "render_priority": 3,
+}

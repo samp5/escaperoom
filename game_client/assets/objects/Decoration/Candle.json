@@ -1,0 +1,33 @@
+{
+  "name": "Candle",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "animated",
+    "stylable"
+  ],
+  "property_values": {
+    "animated": {
+      "frame_count": 12,
+      "frame_length": 0.75,
+      "frame_width": 16,
+      "frame_height": 16,
+    },
+    "stylable": {
+      "available": [
+        {
+          "name": "One"
+          "texture": "candle.png"
+        },
+        {
+          "name": "Two"
+          "texture": "candle2.png"
+        },
+      ],
+    }
+  },
+  "texture": "candle.png",
+  "render_priority": 1,
+}

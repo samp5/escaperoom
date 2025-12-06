@@ -1,0 +1,29 @@
+{
+  "name": "Fake Tiled Floor",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "stylable",
+    "tiled_brushable",
+    "containsitems",
+    "interactable",
+  ],
+  "property_values": {
+    "stylable": {
+      "available": [
+        {
+          "name": "Blue Glaze"
+          "texture": "glaze_tile.png"
+        },
+        {
+          "name": "Purple Glaze"
+          "texture": "purple_glaze.png"
+        }
+      ],
+    }
+  },
+  "texture": "glaze_tile.png",
+  "render_priority": 0,
+}

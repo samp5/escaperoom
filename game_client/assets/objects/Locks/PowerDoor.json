@@ -1,0 +1,33 @@
+{
+  "name": "Power Door",
+  "size": {
+    "width": 1,
+    "height": 2,
+  },
+  "properties": [
+    "interactable",
+    "barrier",
+    "locked",
+    "conditionally_active",
+    "connector_sink",
+  ],
+  "property_values": {
+    "locked": {
+        "default": {
+          "type": "power"
+        },
+        "available": [
+          { "type": "combo_lock" },
+          { "type": "key_lock" },
+          { "type": "pass_phrase" },
+          { "type": "trivial" },
+          { "type": "power" },
+        ]
+    }
+    "connector_sink":{
+        "type": "Power",
+    }
+  },
+  "texture": "power_door.png",
+  "render_priority": 5,
+}

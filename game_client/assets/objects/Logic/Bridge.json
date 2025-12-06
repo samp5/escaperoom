@@ -1,0 +1,20 @@
+{
+  "name": "Wire Bridge",
+  "size": {
+    "width": 3,
+    "height": 1,
+  },
+  "properties": [
+    "connector_bridge",
+    "obtainable",
+    "containable",
+    "interactable",
+  ],
+  "property_values": {
+    "connector_bridge": {
+      "type": "Power",
+    }
+  },
+  "texture": "bridge.png",
+  "render_priority": 2,
+}

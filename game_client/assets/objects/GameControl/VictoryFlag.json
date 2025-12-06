@@ -1,0 +1,24 @@
+{
+  "name": "Victory Flag",
+  "size": {
+    "width": 2,
+    "height": 2,
+  },
+  "properties": [
+    "interactable",
+    "animated",
+    "unique",
+    "completes_level",
+    "conditionally_active",
+  ],
+  "property_values": {
+    "animated": {
+      "frame_count": 9,
+      "frame_length": 0.1,
+      "frame_width": 32,
+      "frame_height": 32,
+    }
+  },
+  "texture": "flag.png",
+  "render_priority": 5,
+}

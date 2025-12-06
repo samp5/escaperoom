@@ -1,0 +1,581 @@
+package group24.escaperoom.screens;
+
+import java.io.File;
+import java.util.Optional;
+
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
+
+import group24.escaperoom.data.MapMetadata;
+import group24.escaperoom.data.MapSaver;
+import group24.escaperoom.data.MapUploader;
+import group24.escaperoom.data.NotificationBus;
+import group24.escaperoom.data.MapUploader.UploadOutput;
+import group24.escaperoom.data.User;
+import group24.escaperoom.data.Grid;
+import group24.escaperoom.data.MapDownloader;
+import group24.escaperoom.data.MapDownloader.DownloadOutput;
+import group24.escaperoom.data.MapMetadata.MapLocation;
+import group24.escaperoom.data.MapMetadata.MapStats;
+import group24.escaperoom.ui.SmallLabel;
+import group24.escaperoom.ui.widgets.G24Dialog;
+import group24.escaperoom.ui.widgets.G24TextButton;
+import group24.escaperoom.ui.MapStatDialog;
+import group24.escaperoom.AssetManager;
+import group24.escaperoom.ScreenManager;
+import group24.escaperoom.data.MapLoader;
+import group24.escaperoom.data.MapManager;
+import group24.escaperoom.utils.Notifier;
+import group24.escaperoom.ui.ConfirmDialog;
+import group24.escaperoom.ui.widgets.G24TextInput;
+import group24.escaperoom.ui.widgets.G24NumberInput.IntInput;
+import group24.escaperoom.utils.Types.Size;
+
+public class MapSelectScreen extends MenuScreen {
+
+  private static class MapSelectScreenSettings {
+    boolean creation = false;
+    boolean edit = false;
+    boolean download = false;
+    boolean verify = false;
+    boolean upload = false;
+    boolean play = false;
+    boolean delete = false;
+  }
+
+  private MapSelectScreenSettings settings;
+  protected Array<MapEntry> entries = new Array<>();
+  protected VerticalGroup entriesUI = new VerticalGroup();
+  private AbstractScreen returnTo;
+
+  public static class StatLabel extends SmallLabel {
+    public StatLabel(String label, String value) {
+      super(label + ": " + value, "bubble_gray", 0.6f);
+    }
+  }
+
+  protected class MapEntry extends ScrollPane {
+
+    Table innerTable = new Table();
+    MapMetadata data;
+
+    private void addStats(MapStats stats) {
+      HorizontalGroup statGroup = new HorizontalGroup();
+      statGroup.addActor(new StatLabel("Creator", stats.creator));
+      statGroup.addActor(new StatLabel("Downloads", Long.toString(stats.downloads)));
+      statGroup.addActor(new StatLabel("Attempts", Long.toString(stats.attempts)));
+      statGroup.addActor(new StatLabel("Clears", Long.toString(stats.clears)));
+      statGroup.space(10);
+      innerTable.add(statGroup).colspan(innerTable.getColumns()).center();
+    }
+
+    public MapEntry(MapMetadata metadata) {
+      super(null, AbstractScreen.skin);
+      setStyle(AbstractScreen.skin.get("transparent", ScrollPaneStyle.class));
+      this.data = metadata;
+      innerTable.setFillParent(true);
+      innerTable.defaults().pad(10).center();
+      innerTable.add(new SmallLabel(metadata.name, "bubble"));
+
+      if (settings.play) {
+        innerTable.add(new PlayButton());
+      }
+
+      if (settings.edit && metadata.mapID.isEmpty()) {
+        innerTable.add(new EditButton());
+      }
+
+      if (settings.verify && User.isLoggedIn() && metadata.mapID.isEmpty()) {
+        innerTable.add(new VerifyButton());
+      }
+
+      if (settings.upload && metadata.mapID.isEmpty()) {
+        innerTable.add(new UploadButton());
+      }
+
+      if (settings.download) {
+        innerTable.add(new DownloadButton());
+      }
+
+      if (!settings.download) {
+        innerTable.add(new CopyButton());
+      }
+
+      if (settings.delete) {
+        innerTable.add(new DeleteButton());
+      }
+
+      metadata.stats.ifPresent((s) -> {
+        innerTable.add(new InfoButton(s));
+        innerTable.row();
+        addStats(s);
+      });
+
+      setActor(innerTable);
+    }
+
+    private class PlayButton extends ImageButton {
+      PlayButton() {
+        super(skin, "play");
+        addListener(new ChangeListener() {
+          @Override
+          public void changed(ChangeEvent event, Actor actor) {
+            if (PlayButton.this.isChecked()) {
+              MapLoader.tryLoadMap(data, settings.creation).ifPresent((g) -> {
+                ScreenManager.instance().showScreen(new SinglePlayerGameScreen(g, false));
+              });
+            }
+          }
+        });
+      }
+    }
+
+
+    private class CopyButton extends ImageButton {
+      CopyButton() {
+        super(skin, "copy");
+        setProgrammaticChangeEvents(false);
+        addListener(new ChangeListener() {
+          @Override
+          public void changed(ChangeEvent event, Actor actor) {
+            if (CopyButton.this.isChecked()) {
+              CopyButton.this.setChecked(false);
+
+              G24TextInput nameInput = new G24TextInput();
+
+              new ConfirmDialog.Builder("Copy Map")
+                .withContent(new SmallLabel("Copy Name:", "underline"), false)
+                .withContent(nameInput, false)
+                .confirmText("Copy")
+                .onConfirm(() -> {
+                  String newName = nameInput.getText();
+                  if (newName.isBlank() || newName.isEmpty()){
+                    Notifier.warn("No name provided!");
+                    return false;
+                  }
+
+                  File newfile = new File(new MapLocation(newName, false).mapBasePath);
+                  if (newfile.exists()){
+                    Notifier.error("Map with name \"" + newName + "\" already exists!");
+                    return false;
+                  }
+
+                  MapManager.copy(data, newName).ifPresentOrElse(
+                    (md) -> {
+                      entriesUI.addActor(new MapEntry(md));
+                      entriesUI.pack();
+                      rootTable.pack();
+                    },
+                    () -> Notifier.warn("Copy Failed")
+                  );
+
+                  return true;
+                })
+                .build().show(getUIStage());
+            }
+          }
+        });
+      }
+    }
+
+    private class DeleteButton extends ImageButton {
+      DeleteButton() {
+        super(skin, "toggleForbidden");
+        setProgrammaticChangeEvents(false);
+        addListener(new ChangeListener() {
+          @Override
+          public void changed(ChangeEvent event, Actor actor) {
+            if (DeleteButton.this.isChecked()) {
+              G24Dialog dialog = new G24Dialog("Are you sure?");
+              dialog.getContentTable().defaults().padLeft(10).padRight(10);
+              dialog.getContentTable().add(new SmallLabel(
+                  "Are you sure you want to delete " + MapEntry.this.data.name + "?"));
+              dialog.getContentTable().row();
+              dialog.getContentTable().add(
+                  new SmallLabel("This will delete any custom object data or textures in this directory", "underline"));
+              dialog.getContentTable().row();
+              dialog.getContentTable().add(new SmallLabel("This cannot be undone", "underline"));
+              G24TextButton confirmButton = new G24TextButton("Delete");
+              dialog.getButtonTable().add(confirmButton);
+
+              confirmButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                  MapSaver.deleteMap(MapEntry.this.data);
+                  MapEntry.this.remove();
+                  MapSelectScreenBuilder.maps.removeValue(MapEntry.this.data, false);
+                  dialog.hide();
+                  Notifier.info("Successfully deleted map.");
+                }
+              });
+
+              G24TextButton cancelButton = new G24TextButton("Cancel");
+              dialog.getButtonTable().add(cancelButton);
+              cancelButton.addListener(new ChangeListener() {
+
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                  DeleteButton.this.setChecked(false);
+                  dialog.hide();
+                }
+
+              });
+
+              dialog.show(DeleteButton.this.getStage());
+            }
+          }
+        });
+      }
+    }
+
+    private class UploadButton extends ImageButton {
+      UploadButton() {
+        super(skin, "upload");
+        setProgrammaticChangeEvents(false);
+        addListener(new ChangeListener() {
+          @Override
+          public void changed(ChangeEvent event, Actor actor) {
+            if (UploadButton.this.isChecked()) {
+              UploadButton.this.setChecked(false);
+              if (!User.isLoggedIn()) {
+                Notifier.error("You must be logged in to upload a map!");
+                return;
+              }
+
+              waitFor(MapUploader.uploadMap(data), (UploadOutput output) -> {
+                output.reason.ifPresent((err) -> {
+                  Notifier.error(err);
+                });
+                output.response.ifPresent((rsp) -> {
+                  Notifier.info(String.format("%s successfully uploaded!", data.name));
+                  System.out.println("MapID: `%s`\n");
+                });
+                return null;
+              }, "Uploading");
+            }
+          }
+        });
+      }
+    }
+
+    private class DownloadButton extends ImageButton {
+      DownloadButton() {
+        super(skin, "download");
+        if (new File(data.locations.mapBasePath).exists()) {
+          setDisabled(true);
+          return;
+        }
+        setProgrammaticChangeEvents(false);
+        addListener(new ChangeListener() {
+          @Override
+          public void changed(ChangeEvent event, Actor actor) {
+            if (DownloadButton.this.isChecked()) {
+              DownloadButton.this.setChecked(false);
+              if (!User.isLoggedIn()) {
+                Notifier.error("You must be logged in to download a map!");
+                return;
+              }
+              waitFor(MapDownloader.downloadMap(data), (DownloadOutput output) -> {
+                output.reason.ifPresent((err) -> {
+                  Notifier.error(err);
+                });
+                output.response.ifPresent((rsp) -> {
+                  DownloadButton.this.setDisabled(true);
+                  Notifier.info(String.format("%s successfully downloaded!", data.name));
+                });
+                return null;
+              }, "Downloading " + data.name);
+            }
+          }
+        });
+      }
+    }
+
+    private class InfoButton extends ImageButton {
+      InfoButton(MapStats stats) {
+        super(skin, "info");
+        setProgrammaticChangeEvents(false);
+        addListener(new ChangeListener() {
+          @Override
+          public void changed(ChangeEvent event, Actor actor) {
+            if (InfoButton.this.isChecked()) {
+              InfoButton.this.setChecked(false);
+              new MapStatDialog(data, stats).show(InfoButton.this.getStage());
+            }
+          }
+        });
+      }
+    }
+
+    private class EditButton extends ImageButton {
+      EditButton() {
+        super(skin, "edit");
+        addListener(new ChangeListener() {
+          @Override
+          public void changed(ChangeEvent event, Actor actor) {
+            if (EditButton.this.isChecked()) {
+              MapLoader.tryLoadMap(data, settings.creation).ifPresent((g) -> {
+                ScreenManager.instance().showScreen(new LevelEditorScreen(g));
+              });
+            }
+          }
+
+        });
+      }
+    }
+
+    private class VerifyButton extends G24TextButton {
+      VerifyButton() {
+        super("Verify");
+        pack();
+        addListener(new ChangeListener() {
+          @Override
+          public void changed(ChangeEvent event, Actor actor) {
+            if (VerifyButton.this.isChecked()) {
+              MapLoader.tryLoadMap(data, settings.creation).ifPresent((g) -> {
+                ScreenManager.instance().showScreen(new SinglePlayerGameScreen(g, true));
+              });
+            }
+          }
+        });
+      }
+    }
+  }
+
+  G24TextButton backButton;
+  ChangeListener onBackButton = new ChangeListener() {
+    @Override
+    public void changed(ChangeEvent event, Actor actor) {
+      if (returnTo == null) {
+        ScreenManager.instance().showScreen(new MainMenuScreen());
+      } else {
+        NotificationBus.get().removeListener(returnTo.getNotificationOverlay());
+        ScreenManager.instance().showScreen(returnTo);
+      }
+    }
+  };
+
+  protected MapSelectScreen() { }
+
+  protected MapSelectScreen(Array<MapMetadata> maps, MapSelectScreenSettings settings, AbstractScreen returnTo) {
+    init(maps, settings, returnTo);
+  }
+
+  protected void init(Array<MapMetadata> maps, MapSelectScreenSettings settings, AbstractScreen returnTo) {
+    this.settings = settings;
+    this.returnTo = returnTo;
+    backButton = new G24TextButton("Back");
+    backButton.addListener(onBackButton);
+
+    rootTable.defaults().pad(10);
+
+    Image title = null;
+    if (this instanceof MarketplaceScreen){
+      title = new Image(AssetManager.instance().loadTextureBlocking("textures/marketplace.png"));
+    } else {
+      title = new Image(AssetManager.instance().loadTextureBlocking("textures/map_select.png"));
+    }
+    title.setScaling(Scaling.contain);
+
+    rootTable.add(title).padTop(200).colspan(2).center().maxWidth(800);
+    rootTable.row();
+    entriesUI.pad(25);
+    entriesUI.space(30);
+    entriesUI.fill();
+    entriesUI.grow();
+    for (MapMetadata data : maps) {
+      MapEntry e = new MapEntry(data);
+      entriesUI.addActor(e);
+      entries.add(e);
+    }
+    ScrollPane p = new ScrollPane(entriesUI, AbstractScreen.skin, "nobkg");
+    p.setFadeScrollBars(false);
+    p.setScrollBarPositions(false, true);
+    p.setForceScroll(false, true);
+    rootTable.add(p).top().colspan(2).maxHeight(0.75f * getUIStage().getHeight()).expandX();
+    p.pack();
+
+    rootTable.row();
+    rootTable.add(backButton).bottom().left().expand();
+
+    if (settings.creation) {
+      rootTable.add(new CreateNewMapButton()).bottom().right().expand();
+    }
+
+    BackManager.addBack(() -> {
+      if (User.isLoggedIn()) {
+        ScreenManager.instance().showScreen(new OnlineMainMenu());
+      } else {
+        ScreenManager.instance().showScreen(new MainMenuScreen());
+      }
+    });
+  }
+
+
+  public static class MapSelectScreenBuilder {
+    private static Array<MapMetadata> maps = new Array<>();
+    private static AbstractScreen returnTo = null;
+    private static MapSelectScreenSettings settings = new MapSelectScreenSettings();
+
+    public MapSelectScreenBuilder(AbstractScreen back) {
+      settings = new MapSelectScreenSettings();
+      maps = new Array<>();
+      returnTo = back;
+      NotificationBus.get().removeListener(returnTo.getNotificationOverlay());
+    }
+
+    public static Array<MapMetadata> getMaps() {
+      return maps;
+    }
+
+    public static AbstractScreen getReturnTo() {
+      return returnTo;
+    }
+
+    public static MapSelectScreenSettings getSettings() {
+      return settings;
+    }
+
+    public MapSelectScreenBuilder(boolean previousSettings) {
+      if (!previousSettings) {
+        settings = new MapSelectScreenSettings();
+        maps = new Array<>();
+        returnTo = null;
+      } else {
+        // always refresh maps 
+        maps = MapLoader.discoverMaps();
+      }
+    }
+
+    public MapSelectScreenBuilder withMaps(Array<MapMetadata> maps) {
+      MapSelectScreenBuilder.maps = maps;
+      return this;
+    }
+
+    public MapSelectScreenBuilder creation() {
+      settings.creation = true;
+      return this;
+    }
+
+    public MapSelectScreenBuilder play() {
+      settings.play = true;
+      return this;
+    }
+
+    public MapSelectScreenBuilder edit() {
+      settings.edit = true;
+      return this;
+    }
+
+    public MapSelectScreenBuilder verify() {
+      settings.verify = true;
+      return this;
+    }
+
+    public MapSelectScreenBuilder delete() {
+      settings.delete = true;
+      return this;
+    }
+
+    public MapSelectScreenBuilder download() {
+      settings.download = true;
+      return this;
+    }
+
+    public MapSelectScreenBuilder upload() {
+      settings.upload = true;
+      return this;
+    }
+
+    public MapSelectScreen build() {
+      return new MapSelectScreen(maps, settings, returnTo);
+    }
+  }
+
+  private class CreateNewMapButton extends G24TextButton {
+    private ConfirmDialog getConfirmDialog(){
+      SmallLabel nameLabel = new SmallLabel("Map Name", "underline");
+      G24TextInput mapNameInput = new G24TextInput();
+      mapNameInput.setFilter(
+          (c) -> Character.isAlphabetic(c) ||
+              Character.isDigit(c) ||
+              Character.isWhitespace(c),
+          "Map names can only contain letters, numbers, or spaces");
+      mapNameInput.setMessageText("\'My new map\"");
+
+      Size s = new Size(WORLD_WIDTH, WORLD_HEIGHT);
+      IntInput widthInput = new IntInput(AbstractScreen.WORLD_WIDTH, (int val) -> {
+        s.width = val;
+      });
+
+      IntInput heightInput = new IntInput(AbstractScreen.WORLD_WIDTH, (int val) -> {
+        s.height = val;
+      });
+
+      ConfirmDialog d = new ConfirmDialog.Builder("Create a new Map")
+          .disableSpawner(this)
+          .onConfirm(() -> {
+            String newMap = mapNameInput.getText();
+            if (newMap.isBlank() || newMap.isEmpty()){
+              Notifier.warn("Must enter a map name!", mapNameInput);
+              return false;
+            }
+
+            if (new File(new MapLocation(newMap, false).mapBasePath).exists()) {
+              Notifier.warn("Map with name \"" + newMap + "\" already exists!", mapNameInput);
+              return false;
+            }
+
+            MapMetadata newMetadata = new MapMetadata(newMap, false);
+        
+            if (!MapSaver.saveMap(new Grid(s.width, s.width),
+                newMetadata)) {
+              Notifier.warn("Error creating map \"" + newMap + "\"");
+              return true;
+            }
+
+            entriesUI.addActor(new MapEntry(newMetadata));
+
+            entriesUI.pack();
+            rootTable.pack();
+            return true;
+          })
+          .cancelText("Cancel")
+          .build();
+
+      d.getContentTable().add(nameLabel).colspan(2).row();
+      d.getContentTable().add(mapNameInput).colspan(2).row();
+      d.getContentTable().add(new SmallLabel("Map Height","underline"));
+      d.getContentTable().add(heightInput).row();
+      d.getContentTable().add(new SmallLabel("Map Width", "underline"));
+      d.getContentTable().add(widthInput).row();
+      return d;
+    }
+
+
+    CreateNewMapButton() {
+      super("Create New Map");
+      setProgrammaticChangeEvents(false);
+
+      addListener(new ChangeListener() {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+          if (isChecked()) {
+            setChecked(false);
+            setDisabled(true);
+            getConfirmDialog().show(getUIStage());
+          }
+        }
+      });
+    }
+  }
+
+}

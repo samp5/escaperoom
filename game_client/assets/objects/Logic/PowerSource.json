@@ -1,0 +1,28 @@
+{
+  "name": "Power Source",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "connector_source",
+    "obtainable",
+    "containable",
+    "interactable",
+    "animated",
+  ],
+  "property_values": {
+    "connector_source": {
+      "type": "Power",
+      "connected": true,
+    },
+    "animated": {
+      "frame_count": 7,
+      "frame_length": 0.5,
+      "frame_width": 16,
+      "frame_height": 16,
+    }
+  },
+  "texture": "power_source.png",
+  "render_priority": 2,
+}

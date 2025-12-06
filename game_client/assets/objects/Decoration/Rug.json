@@ -1,0 +1,32 @@
+{
+  "name": "Rug",
+  "size": {
+    "width": 4,
+    "height": 2,
+  },
+  "properties": [
+    "covering",
+    "interactable",
+    "stylable"
+  ],
+  "property_values": {
+    "stylable": {
+      "available": [
+        {
+          "name": "Red"
+          "texture": "red_rug.png"
+        },
+        {
+          "name": "Checkered"
+          "texture": "check_rug.png"
+        },
+        {
+          "name": "Green"
+          "texture": "green_rug.png"
+        },
+      ],
+    }
+  },
+  "texture": "red_rug.png",
+  "render_priority": 1,
+}

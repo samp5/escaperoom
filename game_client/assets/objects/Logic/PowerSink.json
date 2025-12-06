@@ -1,0 +1,20 @@
+{
+  "name": "Power Output",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "connector_sink",
+    "obtainable",
+    "containable",
+    "interactable",
+  ],
+  "property_values": {
+    "connector_sink": {
+      "type": "Power",
+    },
+  },
+  "texture": "power_sink.png",
+  "render_priority": 2,
+}

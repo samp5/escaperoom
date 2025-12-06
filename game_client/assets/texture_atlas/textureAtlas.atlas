@@ -1,0 +1,433 @@
+
+textureAtlas.png
+size: 1024, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+and_gate
+  rotate: false
+  xy: 560, 64
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+brick_hidden_door
+  rotate: false
+  xy: 576, 80
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+brick_wall
+  rotate: false
+  xy: 0, 96
+  size: 192, 64
+  orig: 192, 64
+  offset: 0, 0
+  index: -1
+bridge
+  rotate: false
+  xy: 480, 64
+  size: 48, 16
+  orig: 48, 16
+  offset: 0, 0
+  index: -1
+brush
+  rotate: false
+  xy: 800, 143
+  size: 31, 31
+  orig: 31, 31
+  offset: 0, 0
+  index: -1
+buffer_gate
+  rotate: false
+  xy: 576, 64
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+candle
+  rotate: false
+  xy: 0, 16
+  size: 192, 16
+  orig: 192, 16
+  offset: 0, 0
+  index: -1
+candle2
+  rotate: false
+  xy: 0, 0
+  size: 192, 16
+  orig: 192, 16
+  offset: 0, 0
+  index: -1
+check_floor
+  rotate: false
+  xy: 592, 80
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+check_rug
+  rotate: false
+  xy: 192, 64
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+chest
+  rotate: false
+  xy: 720, 128
+  size: 16, 64
+  orig: 16, 64
+  offset: 0, 0
+  index: -1
+clock
+  rotate: false
+  xy: 752, 80
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+computer
+  rotate: false
+  xy: 768, 238
+  size: 252, 18
+  orig: 252, 18
+  offset: 0, 0
+  index: -1
+dark_brown_rat
+  rotate: false
+  xy: 0, 192
+  size: 640, 32
+  orig: 640, 32
+  offset: 0, 0
+  index: -1
+dark_hidden_door
+  rotate: false
+  xy: 592, 96
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+dark_wall
+  rotate: false
+  xy: 0, 32
+  size: 192, 64
+  orig: 192, 64
+  offset: 0, 0
+  index: -1
+desk
+  rotate: false
+  xy: 672, 0
+  size: 48, 192
+  orig: 48, 192
+  offset: 0, 0
+  index: -1
+door
+  rotate: false
+  xy: 752, 96
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+empty_container_slot
+  rotate: false
+  xy: 256, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+filter_gate
+  rotate: false
+  xy: 768, 94
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+flag
+  rotate: false
+  xy: 0, 160
+  size: 288, 32
+  orig: 288, 32
+  offset: 0, 0
+  index: -1
+floppy
+  rotate: false
+  xy: 784, 126
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+fow_tilemap
+  rotate: false
+  xy: 288, 128
+  size: 192, 64
+  orig: 192, 64
+  offset: 0, 0
+  index: -1
+game_button
+  rotate: false
+  xy: 528, 64
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+glaze_tile
+  rotate: false
+  xy: 480, 128
+  size: 192, 64
+  orig: 192, 64
+  offset: 0, 0
+  index: -1
+green_rug
+  rotate: false
+  xy: 640, 192
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+hidden_door
+  rotate: false
+  xy: 704, 192
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+key
+  rotate: false
+  xy: 800, 127
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+key_card
+  rotate: false
+  xy: 736, 48
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+lamp
+  rotate: false
+  xy: 192, 96
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+lever
+  rotate: false
+  xy: 736, 160
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+magnifying_glass
+  rotate: false
+  xy: 544, 80
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+map
+  rotate: false
+  xy: 863, 158
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+nand_gate
+  rotate: false
+  xy: 608, 96
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+not_gate
+  rotate: false
+  xy: 640, 112
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+note
+  rotate: false
+  xy: 736, 128
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+or_gate
+  rotate: false
+  xy: 656, 112
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+placeholder
+  rotate: false
+  xy: 576, 48
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+player_start
+  rotate: false
+  xy: 720, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+power_door
+  rotate: false
+  xy: 768, 110
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+power_sink
+  rotate: false
+  xy: 592, 64
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+power_source
+  rotate: false
+  xy: 480, 112
+  size: 112, 16
+  orig: 112, 16
+  offset: 0, 0
+  index: -1
+purple_glaze
+  rotate: false
+  xy: 768, 174
+  size: 192, 64
+  orig: 192, 64
+  offset: 0, 0
+  index: -1
+rat
+  rotate: false
+  xy: 0, 224
+  size: 768, 32
+  orig: 768, 32
+  offset: 0, 0
+  index: -1
+red_rug
+  rotate: false
+  xy: 960, 206
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+rug
+  rotate: false
+  xy: 960, 174
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+sandstone_hidden_door
+  rotate: false
+  xy: 720, 32
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+sandstone_wall
+  rotate: false
+  xy: 288, 64
+  size: 192, 64
+  orig: 192, 64
+  offset: 0, 0
+  index: -1
+selection_outline
+  rotate: false
+  xy: 768, 142
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sr_latch
+  rotate: false
+  xy: 752, 64
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_floor
+  rotate: false
+  xy: 768, 78
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+stone_hidden_door
+  rotate: false
+  xy: 720, 0
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+stone_wall
+  rotate: false
+  xy: 192, 0
+  size: 192, 64
+  orig: 192, 64
+  offset: 0, 0
+  index: -1
+switch
+  rotate: false
+  xy: 831, 158
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+switch2
+  rotate: false
+  xy: 608, 112
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+tile
+  rotate: false
+  xy: 784, 110
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wire
+  rotate: false
+  xy: 384, 0
+  size: 192, 64
+  orig: 192, 64
+  offset: 0, 0
+  index: -1
+wood_floor
+  rotate: false
+  xy: 800, 111
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wood_wall_corner
+  rotate: false
+  xy: 720, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wood_walls
+  rotate: false
+  xy: 480, 80
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+xor_gate
+  rotate: false
+  xy: 736, 32
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

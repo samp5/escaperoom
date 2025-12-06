@@ -1,0 +1,30 @@
+{
+  "name": "Lamp",
+  "size": {
+    "width": 2,
+    "height": 4,
+  },
+  "properties": [
+    "covering",
+    "collideable",
+    "animated",
+    "interactable",
+    "conditionally_active",
+  ],
+  "property_values": {
+    "collideable": {
+      "xoffset": 0,
+      "yoffset": 0,
+      "width": 2,
+      "height": 1,
+    },
+    "animated": {
+      "frame_count": 3,
+      "frame_length": 1.2,
+      "frame_width": 32,
+      "frame_height": 64,
+    }
+  },
+  "texture": "lamp.png",
+  "render_priority": 5,
+}

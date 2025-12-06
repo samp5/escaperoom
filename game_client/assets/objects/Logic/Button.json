@@ -1,0 +1,16 @@
+{
+  "name": "Button",
+  "size": {
+    "width": 1,
+    "height": 1,
+  },
+  "properties": [
+    "interactable",
+    "toggleable",
+    "collideable",
+    "conditionally_active",
+    "fragile",
+  ],
+  "texture": "game_button.png",
+  "render_priority": 2,
+}
